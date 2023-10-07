@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CleanyModal
 
 class ToDoDetailsVC: UIViewController {
     var todo: Todo!
@@ -46,23 +47,46 @@ class ToDoDetailsVC: UIViewController {
     }
     
     @IBAction func deleteBtnClicked(_ sender: Any) {
-        let confirmAlert = UIAlertController(title: "Deletion Confirmation", message: "Do You Need To Delete This Todo", preferredStyle: .alert)
-        let confirmAction = UIAlertAction(title: "Confirm", style: .destructive) { _ in
+        // Alert With MyAlertViewController (Cleany Modal Pod)
+        
+        let confirmAlert = MyAlertViewController(
+            title: "Deletion Confirmation",
+            message: "Do You Need To Delete This Todo",
+            imageName: "warning_icon")
+        let confirmationAction = CleanyAlertAction(title: "Confirm", style: .destructive) { _ in
             NotificationCenter.default.post(name: NSNotification.Name("currentTodoDeleted"), object: nil, userInfo: ["deletedTodoIndex" : self.index])
-            let alert = UIAlertController(title: "Delete Todo", message: "A Selected Todo Wil Be Deleted", preferredStyle: .alert)
-            let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
+            let alert = MyAlertViewController(
+                title: "Delete Todo",
+                message: "A Selected Todo Wil Be Deleted",
+                imageName: "warning_icon")
+            let doneAction = CleanyAlertAction(title: "Done", style: .default) { _ in
                 self.navigationController?.popViewController(animated: true)
             }
             alert.addAction(doneAction)
             self.present(alert, animated: true)
         }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        
-        confirmAlert.addAction(confirmAction)
+        let cancelAction = CleanyAlertAction(title: "Cancel", style: .cancel)
+        confirmAlert.addAction(confirmationAction)
         confirmAlert.addAction(cancelAction)
-        present(confirmAlert, animated: true)
+        present(confirmAlert, animated: true, completion: nil)
     }
     
-    
+         // Alert With UIAlertController
+//        let confirmAlert = UIAlertController(title: "Deletion Confirmation", message: "Do You Need To Delete This Todo", preferredStyle: .alert)
+//        let confirmAction = UIAlertAction(title: "Confirm", style: .destructive) { _ in
+//            NotificationCenter.default.post(name: NSNotification.Name("currentTodoDeleted"), object: nil, userInfo: ["deletedTodoIndex" : self.index])
+//            let alert = UIAlertController(title: "Delete Todo", message: "A Selected Todo Wil Be Deleted", preferredStyle: .alert)
+//            let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
+//                self.navigationController?.popViewController(animated: true)
+//            }
+//            alert.addAction(doneAction)
+//            self.present(alert, animated: true)
+//        }
+//
+//        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+//
+//        confirmAlert.addAction(confirmAction)
+//        confirmAlert.addAction(cancelAction)
+//        present(confirmAlert, animated: true)
+//    }
 }
